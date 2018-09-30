@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zou.mapper.SLoginMapper">
+
+	<!-- 查询后台 -->
+    <select id="SelectLogin" resultType="com.zou.entity.SLogin">
+    SELECT * FROM s_login WHERE user_iphone=#{user_iphone} LIMIT 1
+    </select>
+	
+	<!-- 查询用户权限 -->
+	<select id="SelectRole" resultType="java.lang.String">
+	SELECT 
+	s_role.`role`
+  	FROM s_login
+  	INNER JOIN s_role
+  	ON s_login.`role_id`=s_role.`role_id`
+  	WHERE s_login.`user_iphone` = #{user_iphone} LIMIT 1
+	</select>
+	
+	<!-- 查看角色权限 -->
+	<select id="SelectPermission" resultType="com.zou.entity.SPermission">
+	 SELECT s_permission.`permission`,s_permission.`permission_id` FROM s_permission
+ 	INNER JOIN s_login
+ 	ON s_permission.`role_id`=s_login.`role_id`
+ 	WHERE s_login.`user_iphone`=#{user_iphone}
+	</select>
+</mapper>
